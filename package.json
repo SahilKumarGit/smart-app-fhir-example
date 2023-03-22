@@ -16,7 +16,7 @@
   },
   "scripts": {
     "startDev": "react-scripts start",
-    "start": "serve build",
+    "start": "npx serve build",
     "build": "npm i && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
