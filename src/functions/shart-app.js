@@ -12,3 +12,25 @@ export async function getData() {
         console.log({ error })
     }
 }
+
+export async function getObservation() {
+    try {
+        console.log("Loading...")
+        const client = await oauth2.ready();
+        const obv = client.patient.api.fetchAll({
+            type: 'Observation',
+            query: {
+                code: {
+                    $or: [
+                        'http://loinc.org|8310-5',
+                        'http://loinc.org|8302-2',
+                    ]
+                }
+            }
+        })
+        const obvResp = await Promise.all([obv]);
+        console.log({ obvResp })
+    } catch (error) {
+        console.log({ error })
+    }
+}
