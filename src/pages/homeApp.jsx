@@ -1,7 +1,22 @@
+import { useEffect, useState } from "react";
+import { getData } from "../functions/shart-app";
+
 export function HomePage({}) {
-    return <>
+  const [Resp, setResp] = useState();
+  useEffect(() => {
+    getData()
+      .then((resp) => {
+        console.log({ resp });
+        setResp(resp);
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
+  }, []);
+  return (
     <div>
-        ppp
+      Result:
+      <pre>{JSON.stringify(Resp)}</pre>
     </div>
-    </>
+  );
 }
