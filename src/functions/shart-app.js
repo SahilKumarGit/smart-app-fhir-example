@@ -17,7 +17,7 @@ export async function getObservation() {
     try {
         console.log("Loading...")
         const client = await oauth2.ready();
-        const response = await client.patient.search({
+        const response = await client.patient.api.search({
             type: 'Observation',
             query: {
                 code: {
