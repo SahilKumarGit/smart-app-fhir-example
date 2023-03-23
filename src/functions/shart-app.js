@@ -25,7 +25,7 @@ export async function getObservation() {
                 ]
             }
         }
-        const response = await client.patient.request('Observation', query).then(response => response.data.entry.map(entry => entry.resource))
+        const response = await client.patient.request('Observation', query);//.then(response => response.data.entry.map(entry => entry.resource))
         console.log({ response });
         return response
     } catch (error) {
