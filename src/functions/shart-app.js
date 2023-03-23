@@ -20,12 +20,7 @@ export async function getObservation() {
         const response = await client.patient.api.search({
             type: 'Observation',
             query: {
-                code: {
-                    $or: [
-                        'http://loinc.org|8310-5',
-                        'http://loinc.org|8302-2',
-                    ]
-                }
+                code: 'http://loinc.org|8310-5'
             }
         })
         const { entry } = response;
