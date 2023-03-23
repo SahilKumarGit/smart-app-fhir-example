@@ -17,18 +17,19 @@ export async function getObservation() {
     try {
         console.log("Loading...")
         const client = await oauth2.ready();
-        const response = await client.patient.api.search({
-            type: 'Observation',
-            query: {
-                code: 'http://loinc.org|8310-5'
+        const query = {
+            code: {
+                $or: [
+                    'http://loinc.org|8310-5',
+                    'http://loinc.org|8302-2',
+                ]
             }
-        })
-        const { entry } = response;
-        const observationList = entry.map(item => item.resource);
-        console.log({ observationList });
-        return observationList
+        }
+        const response = await client.patient.request('Observation', query).then(response => response.data.entry.map(entry => entry.resource))
+        console.log({ response });
+        return response
     } catch (error) {
         console.log({ error })
-        return error
+        throw Error(error)
     }
 }
