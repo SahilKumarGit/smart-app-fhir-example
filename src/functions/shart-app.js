@@ -33,3 +33,20 @@ export async function getObservation() {
         throw Error(error)
     }
 }
+
+export async function UpdatePatentDetails() {
+    try {
+        console.log("Loading...")
+        const client = await oauth2.ready();
+        const patient = await client.patient.read()
+        const patentData = JSON.parse(JSON.stringify(patient))
+        console.log({ patentData })
+        patentData.birthDate = "1925-12-25"
+        const response = await client.patient.update(patentData);//.then(response => response.data.entry.map(entry => entry.resource))
+        console.log({ response });
+        return response
+    } catch (error) {
+        console.log({ error })
+        throw Error(error)
+    }
+}
