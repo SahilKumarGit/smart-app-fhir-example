@@ -18,7 +18,7 @@ export async function getObservation() {
         console.log("Loading...")
         await oauth2.ready().then(smart => {
             {
-                smart.patient.api.search({
+                smart.api.search({
                     type: 'Observation',
                     query: {
                         code: {
@@ -32,29 +32,10 @@ export async function getObservation() {
                     const { entry } = response;
                     const observationList = entry.map(item => item.resource);
                     console.log(observationList);
+                    return observationList
                 }).catch(error => {
                     console.error(error);
-                });
-            }
-
-            {
-
-                smart.patient.search({
-                    type: 'Observation',
-                    query: {
-                        code: {
-                            $or: [
-                                'http://loinc.org|8310-5',
-                                'http://loinc.org|8302-2',
-                            ]
-                        }
-                    }
-                }).then(response => {
-                    const { entry } = response;
-                    const observationList = entry.map(item => item.resource);
-                    console.log(observationList);
-                }).catch(error => {
-                    console.error(error);
+                    throw Error(error)
                 });
             }
         });
