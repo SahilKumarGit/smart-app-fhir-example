@@ -39,10 +39,21 @@ export async function UpdatePatentDetails() {
         console.log("Loading...")
         const client = await oauth2.ready();
         const patient = await client.patient.read()
-        const patentData = JSON.parse(JSON.stringify(patient))
-        console.log({ patentData })
-        patentData.birthDate = "1925-12-25"
-        const response = await client.patient.update(patentData);//.then(response => response.data.entry.map(entry => entry.resource))
+        const updatedPatient = {
+            resourceType: 'Patient',
+            id: patient.id,
+            gender: patient.gender,
+            birthDate: '1925-12-25',
+            address: patient.address,
+            name: patient.name,
+            telecom: patient.telecom,
+            identifier: patient.identifier
+        };
+        const response = await client.update({
+            resourceType: 'Patient',
+            id: updatedPatient.id,
+            body: updatedPatient
+        });
         console.log({ response });
         return response
     } catch (error) {
