@@ -17,7 +17,7 @@ export async function getObservation() {
     try {
         console.log("Loading...")
         const client = await oauth2.ready();
-        const obv = client.patient.api.fetchAll({
+        const response = await client.patient.search({
             type: 'Observation',
             query: {
                 code: {
@@ -28,8 +28,9 @@ export async function getObservation() {
                 }
             }
         })
-        const obvResp = await Promise.all([obv]);
-        console.log({ obvResp })
+        const { entry } = response;
+        const observationList = entry.map(item => item.resource);
+        console.log({ observationList });
     } catch (error) {
         console.log({ error })
     }
