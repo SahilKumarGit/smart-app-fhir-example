@@ -1,5 +1,5 @@
 import { oauth2 } from "fhirclient";
-export async function getData() {
+export async function getPatient() {
     try {
         console.log("Loading...")
         const client = await oauth2.ready().then(async client => {

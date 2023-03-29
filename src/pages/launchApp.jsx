@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { oauth2 } from "fhirclient";
+import { LoadingComponent } from "./loadingComponent";
 export function LaunchApp({}) {
   useEffect(() => {
     oauth2.authorize({
@@ -7,5 +8,5 @@ export function LaunchApp({}) {
       scope: "launch user/*.* openid profile",
     });
   }, []);
-  return <div>Loading...</div>;
+  return <LoadingComponent loading={true}/>;
 }
