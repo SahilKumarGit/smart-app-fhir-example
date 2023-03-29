@@ -7,6 +7,7 @@ import {
   UpdatePatentDetails,
 } from "../functions/shart-app";
 import { LoadingComponent } from "./loadingComponent";
+import { OvservationComponent } from "./ovservationComponent";
 import { PatientComponent } from "./patientComponent";
 
 export function HomePage({ }) {
@@ -42,32 +43,32 @@ export function HomePage({ }) {
       <div className="patientDetails">
         <PatientComponent
           client={client}
-          insertErrorMessage={insertErrorMessage}
-        />
+          insertErrorMessage={insertErrorMessage} />
       </div>
 
       {/* Patient details shows in this container */}
-      <div className="observasionDetails"></div>
+      <div className="observasionDetails">
+        <OvservationComponent
+          client={client}
+          insertErrorMessage={insertErrorMessage} />
+      </div>
 
       {/* Error messages shows here -- */}
       <div className="errMessagesBox">
-        {errorMessage.map((each) => (
-          <>
-            <div
-              className="alert alert-warning alert-dismissible fade show"
-              role="alert"
-            >
-              <strong>Alert!</strong> {each}
-              <button
-                type="button"
-                className="close"
-                data-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </>
+        {errorMessage.map((each, i) => (<div key={i}
+          className="alert alert-warning alert-dismissible fade show"
+          role="alert"
+        >
+          <strong>Alert!</strong> {each}
+          <button
+            type="button"
+            className="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         ))}
       </div>
     </div>
