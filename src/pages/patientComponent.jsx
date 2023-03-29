@@ -9,7 +9,7 @@ export function PatientComponent({ client, insertErrorMessage }) {
 
   useEffect(() => {
     /* get ready the library by using oauth2.ready(); */
-    setLoading(!true);
+    setLoading(true);
     client?.patient.read().then(each => {
       setPatient(each)
       setLoading(false);
