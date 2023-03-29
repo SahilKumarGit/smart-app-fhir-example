@@ -33,12 +33,11 @@ export function HomePage({ }) {
     });
   }, []);
 
-  if(!client) return <div className="center">We have identified certain issues pertaining to FHIR access. Kindly review the console for further details.</div>
+  if (!client && !loading) return <div className="center">We have identified certain issues pertaining to FHIR access. Kindly review the console for further details.</div>
+  if (loading) return <LoadingComponent loading={loading} />
 
   return (
     <div className="HomeContainer">
-      <LoadingComponent loading={loading} />
-
       {/* Patient details shows in this container */}
       <div className="patientDetails">
         <PatientComponent
