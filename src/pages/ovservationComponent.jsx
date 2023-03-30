@@ -52,7 +52,7 @@ export function OvservationComponent({ client, insertErrorMessage }) {
               <th scope="row">{i + 1}</th>
               <td>{each.resource?.id || '--'}</td>
               <td>{(each.resource?.category || []).map((each, ii) => each.text || '--').join(', ') || '--'}</td>
-              <td>{margeQuentityAndValue(each.resource?.code?.text) || '--'}</td>
+              <td>{each.resource?.code?.text || '--'}</td>
               <td>{each.resource?.valueQuantity?.value ? margeQuentityAndValue(each.resource?.valueQuantity?.unit, each.resource?.valueQuantity?.value) : '--'}</td>
               <td>{new Date(each.resource?.effectiveDateTime).toLocaleString()}</td>
               <td>{new Date(each.resource?.meta?.lastUpdated).toLocaleString()}</td>
