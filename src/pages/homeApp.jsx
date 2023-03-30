@@ -9,11 +9,13 @@ import {
 import { LoadingComponent } from "./loadingComponent";
 import { OvservationComponent } from "./ovservationComponent";
 import { PatientComponent } from "./patientComponent";
+import { PatientEditModal } from "./PatientEditModal";
 
 export function HomePage({ }) {
   const [errorMessage, setErrorMessage] = useState([]);
   const [client, setClient] = useState();
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
 
   const insertErrorMessage = (error) => {
@@ -71,6 +73,7 @@ export function HomePage({ }) {
         </div>
         ))}
       </div>
+      {showModal ? <PatientEditModal onClose={() => { setShowModal(false) }} /> : ''}
     </div>
   );
 }
