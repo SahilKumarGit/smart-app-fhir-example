@@ -40,6 +40,7 @@ export function OvservationComponent({ client, insertErrorMessage }) {
             <th scope="col">#</th>
             <th scope="col">Resource ID</th>
             <th scope="col">Category</th>
+            <th scope="col">Code</th>
             <th scope="col">Value/Quantity</th>
             <th scope="col">Effective (Date/Time)</th>
             <th scope="col">Last Update</th>
@@ -51,6 +52,7 @@ export function OvservationComponent({ client, insertErrorMessage }) {
               <th scope="row">{i + 1}</th>
               <td>{each.resource?.id || '--'}</td>
               <td>{(each.resource?.category || []).map((each, ii) => each.text || '--').join(', ') || '--'}</td>
+              <td>{margeQuentityAndValue(each.resource?.code?.text) || '--'}</td>
               <td>{each.resource?.valueQuantity?.value ? margeQuentityAndValue(each.resource?.valueQuantity?.unit, each.resource?.valueQuantity?.value) : '--'}</td>
               <td>{new Date(each.resource?.effectiveDateTime).toLocaleString()}</td>
               <td>{new Date(each.resource?.meta?.lastUpdated).toLocaleString()}</td>
