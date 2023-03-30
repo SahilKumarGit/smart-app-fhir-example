@@ -74,7 +74,7 @@ export function HomePage({ }) {
         </div>
         ))}
       </div>
-      {showModal ? <PatientEditModal onClose={() => { setShowModal(false) }} /> : ''}
+      {showModal ? <PatientEditModal client={client} insertErrorMessage={insertErrorMessage} onClose={() => { setShowModal(false) }} /> : ''}
     </div>
   );
 }
