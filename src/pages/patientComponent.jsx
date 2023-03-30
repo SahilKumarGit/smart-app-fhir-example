@@ -3,7 +3,7 @@ import { PatentResource } from "../functions/resource";
 import { CapFirstChar } from "../functions/util";
 import { LoadingComponent } from "./loadingComponent";
 
-export function PatientComponent({ client, insertErrorMessage }) {
+export function PatientComponent({ client, insertErrorMessage, setShowModal }) {
   const [patient, setPatient] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +23,7 @@ export function PatientComponent({ client, insertErrorMessage }) {
     <LoadingComponent loading={loading} />
     <nav className="navbar navbar-light">
       <a className="navbar-brand">Patient Details </a>
-      <div className="btn btn-primary my-2 my-sm-0">Edit</div>
+      <div onClick={() => setShowModal(true)} className="btn btn-primary my-2 my-sm-0">Edit</div>
     </nav>
     {!loading ?
       <div className="body">

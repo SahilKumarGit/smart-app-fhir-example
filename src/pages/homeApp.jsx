@@ -44,6 +44,7 @@ export function HomePage({ }) {
       {/* Patient details shows in this container */}
       <div className="patientDetails">
         <PatientComponent
+          setShowModal={setShowModal}
           client={client}
           insertErrorMessage={insertErrorMessage} />
       </div>
