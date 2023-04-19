@@ -11,12 +11,11 @@ import { OvservationComponent } from "./ovservationComponent";
 import { PatientComponent } from "./patientComponent";
 import { PatientEditModal } from "./PatientEditModal";
 
-export function HomePage({ }) {
+export function HomePage({}) {
   const [errorMessage, setErrorMessage] = useState([]);
   const [client, setClient] = useState();
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-
 
   const insertErrorMessage = (error) => {
     console.log("Error:", error);
@@ -27,17 +26,27 @@ export function HomePage({ }) {
 
   useEffect(() => {
     /* get ready the library by using oauth2.ready(); */
-    oauth2.ready().then(client => {
-      setClient(client)
-      setLoading(false)
-    }).catch(err => {
-      setLoading(false)
-      insertErrorMessage(err);
-    });
+    oauth2
+      .ready()
+      .then((client) => {
+        setClient(client);
+        console.log(client)
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        insertErrorMessage(err);
+      });
   }, []);
 
-  if (!client && !loading) return <div className="center">We have identified certain issues pertaining to FHIR access. Kindly review the console for further details.</div>
-  if (loading) return <LoadingComponent loading={loading} />
+  if (!client && !loading)
+    return (
+      <div className="center">
+        We have identified certain issues pertaining to FHIR access. Kindly
+        review the console for further details.
+      </div>
+    );
+  if (loading) return <LoadingComponent loading={loading} />;
 
   return (
     <div className="HomeContainer">
@@ -46,35 +55,49 @@ export function HomePage({ }) {
         <PatientComponent
           setShowModal={setShowModal}
           client={client}
-          insertErrorMessage={insertErrorMessage} />
+          insertErrorMessage={insertErrorMessage}
+        />
       </div>
 
       {/* Patient details shows in this container */}
       <div className="observasionDetails">
         <OvservationComponent
           client={client}
-          insertErrorMessage={insertErrorMessage} />
+          insertErrorMessage={insertErrorMessage}
+        />
       </div>
 
       {/* Error messages shows here -- */}
       <div className="errMessagesBox">
-        {errorMessage.map((each, i) => (<div key={i}
-          className="alert alert-warning alert-dismissible fade show"
-          role="alert"
-        >
-          <strong>Alert!</strong> {each}
-          <button
-            type="button"
-            className="close"
-            data-dismiss="alert"
-            aria-label="Close"
+        {errorMessage.map((each, i) => (
+          <div
+            key={i}
+            className="alert alert-warning alert-dismissible fade show"
+            role="alert"
           >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+            <strong>Alert!</strong> {each}
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         ))}
       </div>
-      {showModal ? <PatientEditModal client={client} insertErrorMessage={insertErrorMessage} onClose={() => { setShowModal(false) }} /> : ''}
+      {showModal ? (
+        <PatientEditModal
+          client={client}
+          insertErrorMessage={insertErrorMessage}
+          onClose={() => {
+            setShowModal(false);
+          }}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

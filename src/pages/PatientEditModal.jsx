@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { ObserveResource, PatentResource } from "../functions/resource";
-import { margeQuentityAndValue } from "../functions/util";
 import { LoadingComponent } from "./loadingComponent";
 
 export function PatientEditModal({ client, insertErrorMessage, onClose }) {

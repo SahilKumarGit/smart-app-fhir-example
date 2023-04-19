@@ -50,3 +50,21 @@ export async function UpdatePatentDetails() {
         throw Error(error)
     }
 }
+
+export async function UploadDocument() {
+    try {
+        console.log("Loading...")
+        const client = await oauth2.ready();
+        const patient = await client.patient.read()
+        const updatedPatient = JSON.parse(JSON.stringify(patient));
+        updatedPatient.birthDate = "1925-12-29"
+
+        const response = await client.update(updatedPatient);
+        console.log({ response });
+        return response
+    } catch (error) {
+        console.log({ error })
+        throw Error(error)
+    }
+}
+
