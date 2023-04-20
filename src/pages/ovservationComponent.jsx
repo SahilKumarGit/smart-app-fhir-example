@@ -52,7 +52,11 @@ export function OvservationComponent({ client, insertErrorMessage }) {
             {(ovservation.entry || []).map((each, i) => (
               <tr key={i}>
                 <th scope="row">{i + 1}</th>
-                <td><Link to={`observation/${each.resource?.id}`}>{each.resource?.id || "--"}</Link></td>
+                <td>
+                  <Link to={`observation/${each.resource?.id}`}>
+                    {each.resource?.id || "--"}
+                  </Link>
+                </td>
                 <td>
                   {(each.resource?.category || [])
                     .map((each, ii) => each.text || "--")
@@ -62,9 +66,9 @@ export function OvservationComponent({ client, insertErrorMessage }) {
                 <td>
                   {each.resource?.valueQuantity?.value
                     ? margeQuentityAndValue(
-                      each.resource?.valueQuantity?.unit,
-                      each.resource?.valueQuantity?.value
-                    )
+                        each.resource?.valueQuantity?.unit,
+                        each.resource?.valueQuantity?.value
+                      )
                     : "--"}
                 </td>
                 <td>
@@ -82,20 +86,24 @@ export function OvservationComponent({ client, insertErrorMessage }) {
   );
 }
 
-
-export const OvservationViewComponent = ({ client, insertErrorMessage, oid, ovservation, setOvservation }) => {
-
+export const OvservationViewComponent = ({
+  client,
+  insertErrorMessage,
+  oid,
+  ovservation,
+  setOvservation,
+}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     /* get ready the library by using oauth2.ready(); */
     setLoading(true);
-    console.log(oid)
+    console.log(oid);
     client
       .request(`Observation/${oid}`)
       .then((each) => {
         setOvservation(each);
-        console.log({ each })
+        console.log({ each });
         setLoading(false);
       })
       .catch((err) => {
@@ -104,17 +112,13 @@ export const OvservationViewComponent = ({ client, insertErrorMessage, oid, ovse
       });
   }, []);
 
-
   return (
     <div className="PatientComponent">
       <LoadingComponent loading={loading} />
       <nav className="navbar navbar-light">
         <a className="navbar-brand">observation Details </a>
         <div className="box">
-          <div
-            onClick={() => { }}
-            className="btn btn-primary btn-sm my-sm-0"
-          >
+          <div onClick={() => {}} className="btn btn-primary btn-sm my-sm-0">
             Edit
           </div>
         </div>
@@ -129,11 +133,15 @@ export const OvservationViewComponent = ({ client, insertErrorMessage, oid, ovse
             </div>
             <div className="field">
               <div className="l">Effective Date/Time</div>
-              <div className="v">{new Date(ovservation.effectiveDateTime).toLocaleString()}</div>
+              <div className="v">
+                {new Date(ovservation.effectiveDateTime).toLocaleString()}
+              </div>
             </div>
             <div className="field">
               <div className="l">Last Updated</div>
-              <div className="v">{new Date(ovservation.meta.lastUpdated).toLocaleString()}</div>
+              <div className="v">
+                {new Date(ovservation.meta.lastUpdated).toLocaleString()}
+              </div>
             </div>
             <div className="field">
               <div className="l">Status</div>
@@ -168,24 +176,25 @@ export const OvservationViewComponent = ({ client, insertErrorMessage, oid, ovse
       )}
     </div>
   );
-}
+};
 
-
-export const OvservationUploadsComponent = ({ client, insertErrorMessage, ovservation, setOvservation }) => {
-
+export const OvservationUploadsComponent = ({
+  client,
+  insertErrorMessage,
+  ovservation,
+  setOvservation,
+}) => {
   const [loading, setLoading] = useState(true);
 
-  const inputFile = useRef(null)
+  const inputFile = useRef(null);
 
   useEffect(() => {
     /* get ready the library by using oauth2.ready(); */
     setLoading(!true);
   }, []);
 
-
-
   const fileUpload = async (mimeType, base64) => {
-    console.log({ mimeType, base64 })
+    console.log({ mimeType, base64 });
     const user = await client?.user?.read();
     const body = {
       resourceType: "DocumentReference",
@@ -203,7 +212,9 @@ export const OvservationUploadsComponent = ({ client, insertErrorMessage, ovserv
       author: [
         {
           reference: `${user.resourceType}/${user.id}`,
-          display: `${user.name[0]?.suffix?.join(" ") || ""} ${user.name[0]?.given?.join(" ") || ""} ${user.name[0]?.family || ""}`,
+          display: `${user.name[0]?.suffix?.join(" ") || ""} ${
+            user.name[0]?.given?.join(" ") || ""
+          } ${user.name[0]?.family || ""}`,
         },
       ],
       // custodian: {
@@ -243,47 +254,93 @@ export const OvservationUploadsComponent = ({ client, insertErrorMessage, ovserv
       //   }
       // ]
     };
-    console.log(body)
-    // return
+
+    const body1 = {
+      resourceType: "DocumentReference",
+      identifier: {
+        system: "http://example.com/document-ids",
+        value: ovservation.id,
+      },
+      status: "current",
+      type: ovservation?.code,
+      subject: {
+        reference: `Patient/${client?.patient?.id}`,
+      },
+      content: [
+        {
+          attachment: {
+            contentType: mimeType,
+            language: "en-US",
+            data: base64.split("base64,")[1],
+            // url: "https://example.com/document-ids/123-heart-rate-monitor-image",
+            title: ovservation?.code?.text,
+          },
+          // format: {
+          //   system: "urn:ietf:bcp:13",
+          //   code: "PNG",
+          //   display: "Portable Network Graphics",
+          // },
+        },
+      ],
+      "context": {
+        "encounter": [
+        ],
+        "related": [
+          {
+            "code": "appends",
+            "target": {
+              "reference": "DiagnosticReport/445812"
+            }
+          }
+        ]
+      }
+    };
+
+    console.log(body1);
+
     client
-      ?.create(body)
+      ?.create(body1)
       .then((each) => {
         console.log(each);
       })
       .catch((err) => {
         insertErrorMessage(err);
       });
-  }
-
+  };
 
   const onFileSelectChange = (event) => {
-    if (!event.target.files?.length) return
+    if (!event.target.files?.length) return;
     {
-      const file = event.target.files[0]
-      console.log(file)
+      const file = event.target.files[0];
+      console.log(file);
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
         fileUpload(file.type, reader.result);
       };
     }
-  }
-
+  };
 
   return (
     <div className="OvservationComponent">
       <LoadingComponent loading={loading} />
       <nav className="navbar navbar-light">
         <a className="navbar-brand">Document Resource</a>
-        <input type='file' onChange={onFileSelectChange} accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" ref={inputFile} style={{ display: 'none' }} />
-        <div onClick={() => inputFile.current.click()} className="btn btn-primary btn-sm my-2 my-sm-0">Add Document</div>
-      </nav>
-      {!loading ? (
-        <div className="body">
+        <input
+          type="file"
+          onChange={onFileSelectChange}
+          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+          ref={inputFile}
+          style={{ display: "none" }}
+        />
+        <div
+          onClick={() => inputFile.current.click()}
+          className="btn btn-primary btn-sm my-2 my-sm-0"
+        >
+          Add Document
         </div>
-      ) : (
-        ""
-      )}
+      </nav>
+      {!loading ? <div className="body"></div> : ""}
     </div>
   );
-}
+};
